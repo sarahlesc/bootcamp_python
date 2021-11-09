@@ -1,13 +1,13 @@
 cookbook = {
-        'sandwich': {'ingredients': "ham, bread, cheese, tomatoes", 'meal': 'lunch', 'prep_time': '10'},
-        'cake': {'ingredients': "flour, sugar, eggs", 'meal': 'dessert', 'prep_time': '60'},
-        'salad': {'ingredients': "avocado, arugula, tomatoes, spinach", 'meal': 'lunch', 'prep_time': '15'}}
+        'sandwich': {'ingredients': ["ham", "bread", "cheese", "tomatoes"], 'meal': 'lunch', 'prep_time': '10'},
+        'cake': {'ingredients': ["flour", "sugar", "eggs"], 'meal': 'dessert', 'prep_time': '60'},
+        'salad': {'ingredients': ["avocado", "arugula", "tomatoes", "spinach"], 'meal': 'lunch', 'prep_time': '15'}}
 
 
 def print_recipe(recipe):
 
     print("Recipe for %s:" % recipe)
-    print("Ingredients list: %s" % cookbook[recipe]['ingredients'])
+    print(f"Ingredients list: {cookbook[recipe]['ingredients']}")
     print("To be eaten for %s" % cookbook[recipe]['meal'])
     print("Takes %s minutes of cooking" % cookbook[recipe]['prep_time'])
 
@@ -17,8 +17,9 @@ def delete_recipe(recipe):
 
 
 def add_new_recipe(recipe, ingredients, meal, prep_time):
-    cookbook[recipe] = {'ingredients': ingredients, 'meal': meal, 'prep_time': prep_time}
-    print_recipe(recipe)
+	words_ingredients = ingredients.split(", ")
+	cookbook[recipe] = {'ingredients': words_ingredients, 'meal': meal, 'prep_time': prep_time}
+	print_recipe(recipe)
 
 def print_all_recipes(cookbook):
     for key in cookbook:
@@ -53,15 +54,13 @@ def beginning_cookbook():
                 print_recipe(printed_recipe)
             else:
                 print("ERROR: this recipe does not exist")
-                break
         elif choice == '4':
             print_all_recipes(cookbook)
         elif choice == '5':
             print("Cookbook closed")
             exit()
         else:
-            print("This option does not exist")
-            exit()
+            print("This option does not exist, please type the corresponding number.")
         choice = input('\n')
 
 
