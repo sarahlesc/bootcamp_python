@@ -83,6 +83,22 @@ class Vector:
 		print(new_vector)
 		return Vector(new_vector)
 
+
+	def __radd__(self, new_dataList):
+		self.verif(new_dataList, self)
+		format = self.form(new_dataList.dataList)
+		new_vector = []
+		i = 0
+		while i < len(new_dataList.dataList):
+			if format == 'row':
+				new_vector.append(new_dataList.dataList[i] + self.dataList[i])
+			else:
+				new_vector.append([new_dataList.dataList[i][0] + self.dataList[i][0]])
+			i += 1
+		print(new_vector)
+		return Vector(new_vector)
+
+
 	def __sub__(self, new_dataList):
 		self.verif(new_dataList, self)
 		format = self.form(new_dataList.dataList)
@@ -97,11 +113,27 @@ class Vector:
 		print(new_vector)
 		return Vector(new_vector)
 
+
+	def __rsub__(self, new_dataList):
+		self.verif(new_dataList, self)
+		format = self.form(new_dataList.dataList)
+		new_vector = []
+		i = 0
+		while i < len(new_dataList.dataList):
+			if format == 'row':
+				new_vector.append(new_dataList.dataList[i] - self.dataList[i])
+			else:
+				new_vector.append([new_dataList.dataList[i][0] - self.dataList[i][0]])
+			i += 1
+		print(new_vector)
+		return Vector(new_vector)
+
+
 	def __truediv__(self, scalar):
 		format = self.form(self.dataList)
 		if scalar == 0:
 			print("a number can't be divided by 0.")
-			exit()
+			return
 		new_vector = []
 		i = 0
 		while i < len(self.dataList):
@@ -109,6 +141,29 @@ class Vector:
 				new_vector.append(self.dataList[i] / scalar)
 			else:
 				new_vector.append([self.dataList[i][0] / scalar])
+			i += 1
+		print(new_vector)
+		return Vector(new_vector)
+
+
+	def __rtruediv__(self, scalar):
+		format = self.form(self.dataList)
+		if scalar == 0:
+			print("a number can't be divided by 0.")
+			return
+		new_vector = []
+		i = 0
+		while i < len(self.dataList):
+			if format == 'row':
+				if self.dataList[i] == 0:
+					print("a number can't be divided by zero")
+					return
+				new_vector.append(scalar / self.dataList[i])
+			else:
+				if self.dataList[i][0] == 0:
+					print("a number can't be divided by zero")
+					return
+				new_vector.append([scalar / self.dataList[i][0]])
 			i += 1
 		print(new_vector)
 		return Vector(new_vector)
@@ -123,6 +178,20 @@ class Vector:
 				new_vector.append(self.dataList[i] * scalar)
 			else:
 				new_vector.append([self.dataList[i][0] * scalar])
+			i += 1
+		print(new_vector)
+		return Vector(new_vector)
+
+
+	def __rmul__(self, scalar):
+		format = self.form(self.dataList)
+		new_vector = []
+		i = 0
+		while i < len(self.dataList):
+			if format == 'row':
+				new_vector.append(scalar * self.dataList[i])
+			else:
+				new_vector.append([scalar * self.dataList[i][0]])
 			i += 1
 		print(new_vector)
 		return Vector(new_vector)
