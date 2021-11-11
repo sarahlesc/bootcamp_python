@@ -37,9 +37,9 @@ class Vector:
 			print('Wrong format of the vector.')
 			exit()
 		if (form == 'column'):
-			self.shape = (len(self.dataList), 1)
+			self.shape = (len(self.dataList),1)
 		else:
-			self.shape = (1, len(self.dataList))
+			self.shape = (1,len(self.dataList))
 		self.values = self.dataList
 
 
@@ -78,7 +78,7 @@ class Vector:
 			if format == 'row':
 				new_vector.append(self.dataList[i] + new_dataList.dataList[i])
 			else:
-				new_vector.append(self.dataList[i][0] + new_dataList.dataList[i][0])
+				new_vector.append([self.dataList[i][0] + new_dataList.dataList[i][0]])
 			i += 1
 		print(new_vector)
 		return Vector(new_vector)
@@ -92,12 +92,76 @@ class Vector:
 			if format == 'row':
 				new_vector.append(self.dataList[i] - new_dataList.dataList[i])
 			else:
-				new_vector.append(self.dataList[i][0] - new_dataList.dataList[i][0])
+				new_vector.append([self.dataList[i][0] - new_dataList.dataList[i][0]])
 			i += 1
 		print(new_vector)
 		return Vector(new_vector)
 
-	def __truediv__(self, new_dataList):
+	def __truediv__(self, scalar):
+		format = self.form(self.dataList)
+		if scalar == 0:
+			print("a number can't be divided by 0.")
+			exit()
+		new_vector = []
+		i = 0
+		while i < len(self.dataList):
+			if format == 'row':
+				new_vector.append(self.dataList[i] / scalar)
+			else:
+				new_vector.append([self.dataList[i][0] / scalar])
+			i += 1
+		print(new_vector)
+		return Vector(new_vector)
 
 
-	def __mul__(self, new_dataList):
+	def __mul__(self, scalar):
+		format = self.form(self.dataList)
+		new_vector = []
+		i = 0
+		while i < len(self.dataList):
+			if format == 'row':
+				new_vector.append(self.dataList[i] * scalar)
+			else:
+				new_vector.append([self.dataList[i][0] * scalar])
+			i += 1
+		print(new_vector)
+		return Vector(new_vector)
+
+
+	def __dot__(self, new_dataList):
+		self.verif(new_dataList, self)
+		format = self.form(new_dataList.dataList)
+		new_vector = []
+		i = 0
+		while i < len(new_dataList.dataList):
+			if format == 'row':
+				new_vector.append(self.dataList[i] * new_dataList.dataList[i])
+			else:
+				new_vector.append([self.dataList[i][0] * new_dataList.dataList[i][0]])
+			i += 1
+		print(new_vector)
+		return Vector(new_vector)
+
+
+	def T(self):
+		format = self.form(self.dataList)
+		new_vector = []
+		i = 0
+		while i < len(self.dataList):
+			if format == 'row':
+				new_vector.append([self.dataList[i]])
+			else:
+				new_vector.append(self.dataList[i][0])
+			i += 1
+		print(new_vector)
+		return Vector(new_vector)
+
+
+	def __str__(self):
+		str = f"{self.dataList}"
+		return str
+
+
+	def __repr__(self):
+		rep = f"Vector = {self.dataList}"
+		return rep
