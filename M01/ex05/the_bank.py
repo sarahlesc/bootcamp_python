@@ -23,6 +23,21 @@ class Bank(object):
 		self.account.append(account)
 
 
+	def check_corruption(self, account):
+		if isinstance(account, Account):
+			lst = dir(account)
+			lst = list(filter(lambda x : not x.startswith("__"), lst))
+			if len(lst) % 2 != 0:
+				return 1
+			if list(filter(lambda x: x.startswith('b'), lst)):
+				return 2
+			if not list(filter(lambda x: x.startswith('zip'), lst)) or not list(filter(lambda x: x.startswith('addr'), lst)):
+				return 3
+			if not hasattr(account, "name") or not hasattr(account, "id") or not hasattr(account, "value"):
+				return 4
+			return 0
+
+
 	def transfer(self, origin, dest, amount):
 		success_dest = False
 		for account in self.account:
@@ -34,34 +49,19 @@ class Bank(object):
 				success_dest = True
 		if success_dest == False:
 			print("One of the account does not exist")
-			return
+			return False
 		if amount < 0:
 			print("The amount of the transfer is incorrect")
-			return
-		if check_corruption(account_from) != 0 or check_corruption(account_to) != 0:
+			return False
+		if self.check_corruption(account_from) != 0 or self.check_corruption(account_to) != 0:
 			print("transfer impossible : corrupted account")
-			return
+			return False
 		account_from.value -= amount
 		account_to.value += amount
 
 
-	def check_corruption(self, account):
-		if isinstance(account, Account):
-			lst = dir(account)
-			lst = list(filter(lambda x : not x.startswith("__"), lst))
-			if len(lst) % 2 == 0:
-				return 1
-			if list(filter(lambda x: x.startswith('b'), lst)):
-				return 2
-			if not list(filter(lambda x: x.startswith('zip'), lst)) or not list(filter(lambda x: x.startswith('addr'), lst)):
-				return 3
-			if not hasattr(account, "name") or not hasattr(account, "id") or not hasattr(account, "value"):
-				return 4
-			return 0
-
-
 	def fix_account(self, account):
-		ret = check_corruption(account)
+		ret = self.check_corruption(account)
 		if ret != 0:
 			if ret == 1:
 				account.append("__new__")
